@@ -1,0 +1,1 @@
+docker run -tid sberthu/krakend 9-p 8088:8088

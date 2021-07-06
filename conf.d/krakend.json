@@ -1,0 +1,98 @@
+{
+    "version": 2,
+    "name": "{{ .service.name }}",
+    "port": "{{ .service.port }}",
+    "cache_ttl": "1s",
+    "timeout": "3s",
+    "tls": {
+        "private_key": "{{ .service.tls.key }}",
+        "public_key": "{{ .service.tls.cert }}"
+    },
+    "endpoints": [
+        {
+            "endpoint": "/hotes",
+            "method": "GET",
+            "headers_to_pass": [
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/hotes.json",
+                    "host": [
+                        "{{ .host1.host }}"
+                    ],
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend-oauth2-clientcredentials": {
+                            "client_id": "{{ .oauth.client.id }}",
+                            "client_secret": "{{ .oauth.client.secret }}",
+                            "token_url": "{{ .host1.host }}{{ .oauth.url }}",
+                            "scopes": "{{ .oauth.scopes }}"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/types",
+            {{ include "get_header.tmpl" }}
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/belink_test/group/get_types",
+                    "host": [
+                        "{{ .host1.host }}"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/espaces",
+            {{ include "get_header.tmpl" }}
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/simple/espaces.json",
+                    "host": [
+                        "{{ .host1.host }}"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/user_by_name/{user_name}",
+            {{ include "get_header.tmpl" }}
+            "backend": [
+                {
+                    "is_collection": false,
+                    "url_pattern": "/api/user/infos/{user_name}",
+                    "host": [
+                        "{{ .host1.host }}"
+                    ],
+                    "allow": [
+                        "nid",
+                        "nom"
+                    ],
+                    "mapping": {
+                        "nom": "name",
+                        "nid": "id"
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/oauth",
+            {{ include "post_header.tmpl" }}
+            "backend": [
+                {
+                    "method": "POST",
+                    "is_collection": false,
+                    "url_pattern": "{{ .oauth.url }}",
+                    "host": [
+                        "{{ .host1.host }}"
+                    ]
+                }
+            ]
+        }
+    ]
+}

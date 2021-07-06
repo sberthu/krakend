@@ -1,0 +1,8 @@
+{
+    "client": {
+        "id":"685f7830-75f6-48e6-8953-2e14e048d375",
+        "secret": "aserra"
+    },
+    "url":"/oauth/token",
+    "scopes": "authenticated,api_belink,benevole,bl_role_medical,bl_role_security,manager"
+}

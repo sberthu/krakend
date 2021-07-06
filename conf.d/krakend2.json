@@ -1,0 +1,123 @@
+{
+    "version": 2,
+    "name": "belink-api",
+    "port": 8088,
+    "cache_ttl": "1s",
+    "timeout": "3s",
+    "tls": {
+        "private_key": "/ssl/alpine.private.key",
+        "public_key": "/ssl/alpine.crt"
+    },
+    "endpoints": [
+        {
+            "endpoint": "/hotes",
+            "method": "GET",
+            "headers_to_pass": [
+                "Content-Type"
+            ],
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/hotes.json",
+                    "host": [
+                        "https://alpine:8902"
+                    ],
+                    "extra_config": {
+                        "github.com/devopsfaith/krakend-oauth2-clientcredentials": {
+                            "client_id": "685f7830-75f6-48e6-8953-2e14e048d375",
+                            "client_secret": "aserra",
+                            "token_url": "https://alpine:8902/oauth/token",
+                            "scopes": "authenticated,api_belink,benevole,bl_role_medical,bl_role_security,manager"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/",
+            "method": "GET",
+            "backend": [
+                {
+                    "url_pattern": "/ip",
+                    "host": [
+                        "https://httpbin.org/"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/types",
+            "method": "GET",
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/belink_test/group/get_types",
+                    "host": [
+                        "https://alpine:8902"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/espaces",
+            "method": "GET",
+            "headers_to_pass": [
+                "Content-Type",
+                "Authorization"
+            ],
+            "backend": [
+                {
+                    "is_collection": true,
+                    "url_pattern": "/simple/espaces.json",
+                    "host": [
+                        "https://alpine:8902"
+                    ]
+                }
+            ]
+        },
+        {
+            "endpoint": "/user_by_name/{user_name}",
+            "method": "GET",
+            "headers_to_pass": [
+                "Content-Type",
+                "Authorization"
+            ],
+            "backend": [
+                {
+                    "is_collection": false,
+                    "url_pattern": "/api/user/infos/{user_name}",
+                    "host": [
+                        "https://alpine:8902"
+                    ],
+                    "allow": [
+                        "nid",
+                        "nom"
+                    ],
+                    "mapping": {
+                        "nom": "name",
+                        "nid": "id"
+                    }
+                }
+            ]
+        },
+        {
+            "endpoint": "/oauth",
+            "method": "POST",
+            "headers_to_pass": [
+                "Content-Type",
+                "Content-Length",
+                "Authorization" 
+            ],
+            "backend": [
+                {
+                    "method": "POST",
+                    "is_collection": false,
+                    "url_pattern": "/oauth/token",
+                    "host": [
+                        "https://alpine:8902"
+                    ]
+                }
+            ]
+        }
+    ]
+}

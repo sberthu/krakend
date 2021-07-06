@@ -1,0 +1,8 @@
+{
+    "name": "be-link api",
+    "port": 8088,
+    "tls" :{
+        "cert": "/ssl/alpine.crt",
+        "key": "/ssl/alpine.private.key"
+    }
+}
