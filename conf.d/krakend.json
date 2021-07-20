@@ -147,10 +147,12 @@
         {{ template "getUsersFromMySpecialityGroup.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getUsersFromMyWorkingGroup.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getUserById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUserByUsername.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getUsers.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getVisibilityForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getFlowForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getLocalizationForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getStandByForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getVisibilityForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getFlowForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getLocalizationForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
@@ -161,6 +163,10 @@
         {{ template "getEntreprises.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getEntrepriseById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "setVisibility.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
-        {{ template "setLocalization.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }}
+        {{ template "setLocalization.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setFlow.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setFlowRequest.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setStandBy.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUpdates.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }}
     ]
 }

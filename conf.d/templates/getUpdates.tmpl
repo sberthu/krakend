@@ -1,15 +1,14 @@
 {
-    "endpoint": "/setLocalization",
+    "endpoint": "/getUpdates",
     "output_encoding": "no-op",
-    {{ include "patch_header.tmpl" }}
+    {{ include "get_header.tmpl" }}
     "extra_config": {
         {{ template "jwt.tmpl" .host1_host }}
     },
     "backend": [
         {
-            "method": "PATCH",
-            "is_collection": false,
-            "url_pattern": "{{ .host2_api_url }}/user/localization",
+            "method": "GET",
+            "url_pattern": "{{ .host2_api_url }}/user/updates",
             "host": [
                 "{{ .host2_host }}"
             ],
