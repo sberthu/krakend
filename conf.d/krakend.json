@@ -8,9 +8,29 @@
         "private_key": "{{ .service.tls.key }}",
         "public_key": "{{ .service.tls.cert }}"
     },
+    "extra_config": {
+        "github_com/devopsfaith/krakend-logstash": {
+            "enabled": true
+        },
+        "github_com/devopsfaith/krakend-gologging": {
+            "level": "INFO",
+            "prefix": "[KRAKEND]",
+            "syslog": false,
+            "stdout": true
+        },
+        "github_com/devopsfaith/krakend-opencensus": {
+            "exporters": {
+            "logger": {
+                "stats": true,
+                "spans": true
+            }
+            }
+        }
+    },
     "endpoints": [
         {
             "endpoint": "/hotes",
+            "output_encoding": "no-op",
             "method": "GET",
             "headers_to_pass": [
                 "Content-Type"
@@ -22,6 +42,7 @@
                     "host": [
                         "{{ .host1.host }}"
                     ],
+                    "encoding": "no-op",
                     "extra_config": {
                         "github.com/devopsfaith/krakend-oauth2-clientcredentials": {
                             "client_id": "{{ .oauth.client.id }}",
@@ -35,33 +56,70 @@
         },
         {
             "endpoint": "/types",
+            "output_encoding": "no-op",
             {{ include "get_header.tmpl" }}
             "backend": [
                 {
-                    "is_collection": true,
                     "url_pattern": "/belink_test/group/get_types",
                     "host": [
                         "{{ .host1.host }}"
-                    ]
+                    ],
+                    "encoding": "no-op",
+                    {{ include "collection.tmpl"}}
                 }
             ]
         },
         {
-            "endpoint": "/espaces",
+            "endpoint": "/group_types",
+            "output_encoding": "no-op",
             {{ include "get_header.tmpl" }}
             "backend": [
                 {
-                    "is_collection": true,
-                    "url_pattern": "/simple/espaces.json",
+                    "url_pattern": "/belink/group/list_type",
                     "host": [
                         "{{ .host1.host }}"
-                    ]
+                    ],
+                    "encoding": "no-op",
+                    {{ include "collection.tmpl"}}
+                }
+            ]
+        },
+        {
+            "endpoint": "/test",
+            "output_encoding": "no-op",
+            {{ include "get_header.tmpl" }}
+	        "extra_config": {
+	            "github.com/devopsfaith/krakend-jose/validator": {
+	            "alg": "RS256",
+                "scopes_key" : "data.scopes",
+                    "scopes": ["azeazeaezmanager"],
+                    "jwk-url": "{{ .host1.host }}/files/public.json"
+                }
+            },	    
+            "backend": [
+                {
+                "url_pattern": "/__debug/default",
+                "encoding": "no-op"
                 }
             ]
         },
         {
             "endpoint": "/user_by_name/{user_name}",
+            "output_encoding": "no-op",
             {{ include "get_header.tmpl" }}
+            "extra_config": {
+                "github.com/devopsfaith/krakend-jose/validator": {
+                    "alg": "RS256",
+                "scopes_key" : "scopes",
+                    "scopes": [],
+                "scopes_matcher": "any",
+                "disable_jwk_security": true,
+                    "jwk-url": "{{ .host1.host }}/belink/jwk",
+                "roles_key": "scopes",
+                    "roles_key_is_nested": false,
+                "roles": ["api_belink"]
+                }
+            },
             "backend": [
                 {
                     "is_collection": false,
@@ -76,23 +134,32 @@
                     "mapping": {
                         "nom": "name",
                         "nid": "id"
-                    }
+                    },
+                    "encoding": "no-op"
                 }
             ]
         },
-        {
-            "endpoint": "/oauth",
-            {{ include "post_header.tmpl" }}
-            "backend": [
-                {
-                    "method": "POST",
-                    "is_collection": false,
-                    "url_pattern": "{{ .oauth.url }}",
-                    "host": [
-                        "{{ .host1.host }}"
-                    ]
-                }
-            ]
-        }
+        {{ template "oauth.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "oauth_url" .oauth.url }},
+        {{ template "jwk.tmpl" dict "host1_host" .host1.host }},
+        {{ template "getAllGroups.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUsersForGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUsersFromMySpecialityGroup.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUsersFromMyWorkingGroup.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUserById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getUsers.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getVisibilityForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getFlowForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getLocalizationForUserId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getVisibilityForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getFlowForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getLocalizationForUsersOfTheGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getHosts.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getHostById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getSpaces.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getSpaceById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getEntreprises.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "getEntrepriseById.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setVisibility.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setLocalization.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }}
     ]
 }

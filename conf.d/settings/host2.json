@@ -1,0 +1,4 @@
+{
+    "host": "http://node:8000",
+    "api_url": "/be-link/api/v4"
+}

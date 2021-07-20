@@ -1,0 +1,18 @@
+{
+    "endpoint": "/getUserById/{user_id}",
+    "output_encoding": "no-op",
+    {{ include "get_header.tmpl" }}
+    "extra_config": {
+        {{ template "jwt.tmpl" .host1_host }}
+    },
+    "backend": [
+        {
+            "method": "GET",
+            "url_pattern": "{{ .host2_api_url }}/user/{user_id}",
+            "host": [
+                "{{ .host2_host }}"
+            ],
+            "encoding": "no-op"
+        }
+    ]
+}

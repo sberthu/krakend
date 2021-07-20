@@ -1,0 +1,19 @@
+{
+    "endpoint": "/setLocalization",
+    "output_encoding": "no-op",
+    {{ include "patch_header.tmpl" }}
+    "extra_config": {
+        {{ template "jwt.tmpl" .host1_host }}
+    },
+    "backend": [
+        {
+            "method": "PATCH",
+            "is_collection": false,
+            "url_pattern": "{{ .host2_api_url }}/user/set_localizaton",
+            "host": [
+                "{{ .host2_host }}"
+            ],
+            "encoding": "no-op"
+        }
+    ]
+}

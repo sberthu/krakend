@@ -1,0 +1,15 @@
+"github.com/devopsfaith/krakend-jose/validator": {
+    "alg": "RS256",
+    "scopes_key" : "scopes",
+    "scopes": [],
+    "scopes_matcher": "any",
+    "disable_jwk_security": true,
+    "jwk-url": "{{ . }}/belink/jwk",
+    "roles_key": "scopes",
+    "roles_key_is_nested": false,
+    "roles": ["api_belink"],
+    "propagate-claims": [
+        ["sub", "x-user"],
+        ["scopes", "x-scopes"]                    
+    ]
+}

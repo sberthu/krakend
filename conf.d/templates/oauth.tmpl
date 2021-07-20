@@ -1,0 +1,16 @@
+{
+    "endpoint": "/oauth",
+    "output_encoding": "no-op",    
+    {{ include "post_header.tmpl" }}
+    "backend": [
+        {
+            "method": "POST",
+            "is_collection": false,
+            "url_pattern": "{{ .oauth_url }}",
+            "host": [
+                "{{ .host1_host }}"
+            ],
+            "encoding": "no-op"
+        }
+    ]
+}

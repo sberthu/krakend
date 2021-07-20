@@ -1,0 +1,19 @@
+{
+    "endpoint": "/getUsers",
+    "output_encoding": "no-op",
+    {{ include "get_header.tmpl" }}
+    "extra_config": {
+        {{ template "jwt.tmpl" .host1_host }}
+    },
+    "backend": [
+        {
+            "method": "GET",
+            "url_pattern": "{{ .host2_api_url }}/users",
+            "host": [
+                "{{ .host2_host }}"
+            ],
+            "encoding": "no-op",
+            {{ include "collection.tmpl" }}
+        }
+    ]
+}

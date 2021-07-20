@@ -1,0 +1,14 @@
+{
+    "endpoint": "/jwk",
+    {{ include "get_header.tmpl" }}
+    "backend": [
+        {
+            "method": "GET",
+            "is_collection": false,
+            "url_pattern": "/belink/jwk",
+            "host": [
+                "{{ .host1_host }}"
+            ]
+        }
+    ]
+}

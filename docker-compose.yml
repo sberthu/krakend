@@ -1,7 +1,7 @@
 version: '3'
 services:
   krakend:
-    image: 'sberthu/krankend'
+    image: 'sberthu/krakend'
     build: .
     restart: always
     volumes:
@@ -19,7 +19,7 @@ services:
       - FC_TEMPLATES=/etc/krakend/templates/
       #- FC_OUT=/share/krakend.log
     ports:
-      - '8088:8088'
+      - '8090:8090'
     networks:
       - sberthu/network
     command: 'run -d -c krakend.json'
