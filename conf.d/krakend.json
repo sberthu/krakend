@@ -9,23 +9,7 @@
         "public_key": "{{ .service.tls.cert }}"
     },
     "extra_config": {
-        "github_com/devopsfaith/krakend-logstash": {
-            "enabled": true
-        },
-        "github_com/devopsfaith/krakend-gologging": {
-            "level": "INFO",
-            "prefix": "[KRAKEND]",
-            "syslog": false,
-            "stdout": true
-        },
-        "github_com/devopsfaith/krakend-opencensus": {
-            "exporters": {
-            "logger": {
-                "stats": true,
-                "spans": true
-            }
-            }
-        }
+        {{ include "extra_prod.tmpl" }}
     },
     "endpoints": [
         {
@@ -165,7 +149,7 @@
         {{ template "setVisibility.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "setLocalization.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "setFlow.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
-        {{ template "setFlowRequest.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
+        {{ template "setFlowRequestForGroupId.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "setStandBy.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }},
         {{ template "getUpdates.tmpl" dict "host1_host" .host1.host "host2_host" .host2.host "host2_api_url" .host2.api_url }}
     ]

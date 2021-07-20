@@ -1,5 +1,5 @@
 {
-    "endpoint": "/setFlowRequest",
+    "endpoint": "/setFlowRequestForGroupId/{group_id}",
     "output_encoding": "no-op",
     {{ include "patch_header.tmpl" }}
     "extra_config": {
@@ -9,7 +9,7 @@
         {
             "method": "PATCH",
             "is_collection": false,
-            "url_pattern": "{{ .host2_api_url }}/user/flowrequest",
+            "url_pattern": "{{ .host2_api_url }}/group/{group_id}/flowrequest",
             "host": [
                 "{{ .host2_host }}"
             ],

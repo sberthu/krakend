@@ -1,0 +1,17 @@
+"github_com/devopsfaith/krakend-logstash": {
+    "enabled": true
+},
+"github_com/devopsfaith/krakend-gologging": {
+    "level": "INFO",
+    "prefix": "[KRAKEND]",
+    "syslog": false,
+    "stdout": true
+},
+"github_com/devopsfaith/krakend-opencensus": {
+    "exporters": {
+    "logger": {
+        "stats": true,
+        "spans": true
+    }
+    }
+}
